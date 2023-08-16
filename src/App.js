@@ -1,9 +1,12 @@
 import * as THREE from 'three'
-import { memo, useRef, forwardRef } from 'react'
+import { memo, useRef, forwardRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Grid, Center, AccumulativeShadows, RandomizedLight, Environment, useGLTF, CameraControls } from '@react-three/drei'
 import { useControls, button, buttonGroup, folder } from 'leva'
 import { suspend } from 'suspend-react'
+import Popup from "./popUpModal";
+
+import Model from "./Model";
 
 const city = import('@pmndrs/assets/hdri/city.exr')
 const suzi = import(`@pmndrs/assets/models/suzi.glb`)
@@ -11,14 +14,28 @@ const suzi = import(`@pmndrs/assets/models/suzi.glb`)
 const { DEG2RAD } = THREE.MathUtils
 
 export default function App() {
+
+  const [imageFile, setImageFile] = useState("");
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const showModel = (imageFile) => {
+    console.log(`showModel imageFile: ${imageFile}`);
+    setIsModelOpen(true);
+    setImageFile(imageFile);
+  };
+  const onHide = () => {
+    setIsModelOpen(false);
+  };
   return (
+    <>
     <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
-      <Scene />
+      <Scene showModel={showModel} />
     </Canvas>
-  )
+     <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
+    </>
+)
 }
 
-function Scene() {
+function Scene(props) {
   const meshRef = useRef()
   const cameraControlsRef = useRef()
 
@@ -122,14 +139,14 @@ function Scene() {
     infinityDolly: { value: false, label: 'infinity dolly' }
   })
 
+
   return (
     <>
       <group position-y={-0.5}>
         <Center top>
-          <Suzi ref={meshRef} rotation={[-0.63, 0, 0]} />
+          <Model showModel = {props.showModel}/>
         </Center>
         <Ground />
-        <Shadows />
         <CameraControls
           ref={cameraControlsRef}
           minDistance={minDistance}
@@ -160,19 +177,3 @@ function Ground() {
   return <Grid position={[0, -0.01, 0]} args={[10.5, 10.5]} {...gridConfig} />
 }
 
-const Shadows = memo(() => (
-  <AccumulativeShadows temporal frames={100} color="#9d4b4b" colorBlend={0.5} alphaTest={0.9} scale={20}>
-    <RandomizedLight amount={8} radius={4} position={[5, 5, -10]} />
-  </AccumulativeShadows>
-))
-
-const Suzi = forwardRef((props, ref) => {
-  const { nodes } = useGLTF(suspend(suzi).default)
-  return (
-    <>
-      <mesh ref={ref} castShadow receiveShadow geometry={nodes.mesh.geometry} {...props}>
-        <meshStandardMaterial color="#9d4b4b" />
-      </mesh>
-    </>
-  )
-})

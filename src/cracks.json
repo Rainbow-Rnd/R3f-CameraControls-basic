@@ -1,0 +1,66 @@
+[
+	{
+		"name": "Crack_1",
+		"title": "Tile_1001",
+		"path": "/tile1-transformed.glb",
+		"crackParam": "crack_1",
+		"position": {
+			"x": 17.578,
+			"y": 13.798,
+			"z": 2.9234
+		},
+		"lookAt": {
+			"x": 17.578,
+			"y": 13.798,
+			"z": 2.9234
+		}
+	},
+	{
+		"name": "Crack_2",
+		"title": "Tile_1002",
+		"path": "/tile2-transformed.glb",
+		"crackParam": "crack_2",
+		"position": {
+			"x": -24.644,
+			"y": 10.762,
+			"z": 6.4084
+		},
+		"lookAt": {
+			"x": -24.644,
+			"y": 10.762,
+			"z": 6.4084
+		}
+	},
+	{
+		"name": "Crack_3",
+		"title": "Tile_1003",
+		"path": "/tile3-transformed.glb",
+		"crackParam": "crack_3",
+		"position": {
+			"x": -21.708,
+			"y": 30.742,
+			"z": 8.3255
+		},
+		"lookAt": {
+			"x": -21.708,
+			"y": 30.742,
+			"z": 8.3255
+		}
+	},
+	{
+		"name": "Crack_4",
+		"title": "Tile_1004",
+		"path": "/tile4-transformed.glb",
+		"crackParam": "crack_4",
+		"position": {
+			"x": 7.7014,
+			"y":  18.363,
+			"z": -6.2573
+		},
+		"lookAt": {
+			"x": 7.7014,
+			"y":  18.363,
+			"z": -6.2573
+		}
+	}
+]
