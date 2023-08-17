@@ -46,3 +46,19 @@ export function Building({ controls, areas, props }) {
 }
 
 useGLTF.preload('/all_edited-transformed.glb')
+
+//      <mesh geometry={nodes.Tile_1.geometry} material={materials.Material_0} position={[0.283, 5.274, 1.352]} />
+//      <mesh geometry={nodes.Tile_1.geometry} material={materials.Material_0} position={[4.04, 75.31272, 19.30656]} />
+
+//x : 4.04
+//y : 75.31272
+//z : 19.30656
+
+//tile1
+//x: 17.2948 m   / 14.27   = 1.211969166082691
+//y : 8.52379 m /  14.27   = 0.5973
+//z : 4.27581 m / 14.27   =  0.2996
+
+//setLootAt
+//position
+// x: 3 , y : 2 , z:3

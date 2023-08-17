@@ -80,63 +80,46 @@ function Scene(props) {
         '/-2': () => cameraControlsRef.current?.zoom(-camera.zoom / 2, true)
       }
     }),
-    minDistance: { value: 0 },
-    moveTo: folder(
-      {
-        vec1: { value: [3, 5, 2], label: 'vec' },
-        'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('moveTo.vec1'), true))
-      },
-      { collapsed: true }
-    ),
-    'fitToBox(mesh)': button(() => cameraControlsRef.current?.fitToBox(meshRef.current, true)),
-    setPosition: folder(
-      {
-        vec2: { value: [-5, 2, 1], label: 'vec' },
-        'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
-      },
-      { collapsed: true }
-    ),
-    setTarget: folder(
-      {
-        vec3: { value: [3, 0, -3], label: 'vec' },
-        'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('setTarget.vec3'), true))
-      },
-      { collapsed: true }
-    ),
-    setLookAt: folder(
-      {
-        vec4: { value: [1, 2, 3], label: 'position' },
-        vec5: { value: [1, 1, 0], label: 'target' },
-        'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('setLookAt.vec4'), ...get('setLookAt.vec5'), true))
-      },
-      { collapsed: true }
-    ),
-    lerpLookAt: folder(
-      {
-        vec6: { value: [-2, 0, 0], label: 'posA' },
-        vec7: { value: [1, 1, 0], label: 'tgtA' },
-        vec8: { value: [0, 2, 5], label: 'posB' },
-        vec9: { value: [-1, 0, 0], label: 'tgtB' },
-        t: { value: Math.random(), label: 't', min: 0, max: 1 },
-        'f(…posA,…tgtA,…posB,…tgtB,t)': button((get) => {
-          return cameraControlsRef.current?.lerpLookAt(
-            ...get('lerpLookAt.vec6'),
-            ...get('lerpLookAt.vec7'),
-            ...get('lerpLookAt.vec8'),
-            ...get('lerpLookAt.vec9'),
-            get('lerpLookAt.t'),
-            true
-          )
-        })
-      },
-      { collapsed: true }
-    ),
-    saveState: button(() => cameraControlsRef.current?.saveState()),
+    // minDistance: { value: 0 },
+    // moveTo: folder(
+    //   {
+    //     vec1: { value: [3, 5, 2], label: 'vec' },
+    //     'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('moveTo.vec1'), true))
+    //   },
+    //   { collapsed: true }
+    // ),
+    // 'fitToBox(mesh)': button(() => cameraControlsRef.current?.fitToBox(meshRef.current, true)),
+    // setPosition: folder(
+    //   {
+    //     vec2: { value: [-5, 2, 1], label: 'vec' },
+    //     'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
+    //   },
+    //   { collapsed: true }
+    // ),
+    // setTarget: folder(
+    //   {
+    //     vec3: { value: [3, 0, -3], label: 'vec' },
+    //     'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('setTarget.vec3'), true))
+    //   },
+    //   { collapsed: true }
+    // ),
+    // setLookAt: folder(
+    //   {
+    //     vec4: { value: [1, 2, 3], label: 'position' },
+    //     vec5: { value: [1, 1, 0], label: 'target' },
+    //     'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('setLookAt.vec4'), ...get('setLookAt.vec5'), true))
+    //   },
+    //   { collapsed: true }
+    // ),
+
+
     reset: button(() => cameraControlsRef.current?.reset(true)),
-    enabled: { value: true, label: 'controls on' },
-    verticalDragToForward: { value: false, label: 'vert. drag to move forward' },
-    dollyToCursor: { value: false, label: 'dolly to cursor' },
-    infinityDolly: { value: false, label: 'infinity dolly' }
+
+    균열_4: button((get) => {
+      cameraControlsRef.current?.setLookAt(3, 2, 3, 1, 2, 0, true)
+      cameraControlsRef.current?.zoom(camera.zoom * 2, true)
+    })
+
   })
 
 
