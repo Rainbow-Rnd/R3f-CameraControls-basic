@@ -1,50 +1,46 @@
 import * as THREE from 'three'
-import { memo, useRef, forwardRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
-import { Grid, Center, AccumulativeShadows, RandomizedLight, Environment, useGLTF, CameraControls } from '@react-three/drei'
+import { Grid, Center, Environment, CameraControls } from '@react-three/drei'
 import { useControls, button, buttonGroup, folder } from 'leva'
 import { suspend } from 'suspend-react'
-import Popup from "./popUpModal";
+import Popup from './popUpModal'
 
-import Model from "./Model";
+import Model from './Model'
 
 const city = import('@pmndrs/assets/hdri/city.exr')
 const suzi = import(`@pmndrs/assets/models/suzi.glb`)
-
 const { DEG2RAD } = THREE.MathUtils
-
 export default function App() {
-
-  const [imageFile, setImageFile] = useState("");
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [imageFile, setImageFile] = useState('')
+  const [isModelOpen, setIsModelOpen] = useState(false)
   const showModel = (imageFile) => {
-    console.log(`showModel imageFile: ${imageFile}`);
-    setIsModelOpen(true);
-    setImageFile(imageFile);
-  };
+    console.log(`showModel imageFile: ${imageFile}`)
+    setIsModelOpen(true)
+    setImageFile(imageFile)
+  }
   const onHide = () => {
-    setIsModelOpen(false);
-  };
+    setIsModelOpen(false)
+  }
   return (
     <>
-    <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
-      <Scene showModel={showModel} />
-    </Canvas>
-     <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
+      <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
+        <Scene showModel={showModel} />
+      </Canvas>
+      <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
     </>
-)
+  )
 }
 
 function Scene(props) {
   const meshRef = useRef()
   const cameraControlsRef = useRef()
-
   const { camera } = useThree()
 
   // All same options as the original "basic" example: https://yomotsu.github.io/camera-controls/examples/basic.html
   const { minDistance, enabled, verticalDragToForward, dollyToCursor, infinityDolly } = useControls({
     thetaGrp: buttonGroup({
-      label: 'rotate theta',
+      label: 'Rotate THETA',
       opts: {
         '+45º': () => cameraControlsRef.current?.rotate(45 * DEG2RAD, 0, true),
         '-90º': () => cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true),
@@ -52,50 +48,26 @@ function Scene(props) {
       }
     }),
     phiGrp: buttonGroup({
-      label: 'rotate phi',
+      label: 'Rotate PHI',
       opts: {
         '+20º': () => cameraControlsRef.current?.rotate(0, 20 * DEG2RAD, true),
         '-40º': () => cameraControlsRef.current?.rotate(0, -40 * DEG2RAD, true)
       }
     }),
-    truckGrp: buttonGroup({
-      label: 'truck',
-      opts: {
-        '(1,0)': () => cameraControlsRef.current?.truck(1, 0, true),
-        '(0,1)': () => cameraControlsRef.current?.truck(0, 1, true),
-        '(-1,-1)': () => cameraControlsRef.current?.truck(-1, -1, true)
-      }
-    }),
     dollyGrp: buttonGroup({
-      label: 'dolly',
+      label: 'Close UP',
       opts: {
-        '1': () => cameraControlsRef.current?.dolly(1, true),
+        1: () => cameraControlsRef.current?.dolly(1, true),
         '-1': () => cameraControlsRef.current?.dolly(-1, true)
       }
     }),
     zoomGrp: buttonGroup({
-      label: 'zoom',
+      label: 'Zoom',
       opts: {
-        '/2': () => cameraControlsRef.current?.zoom(camera.zoom / 2, true),
-        '/-2': () => cameraControlsRef.current?.zoom(-camera.zoom / 2, true)
+        '+2': () => cameraControlsRef.current?.zoom(camera.zoom / 2, true),
+        '-2': () => cameraControlsRef.current?.zoom(-camera.zoom / 2, true)
       }
     }),
-    minDistance: { value: 0 },
-    moveTo: folder(
-      {
-        vec1: { value: [3, 5, 2], label: 'vec' },
-        'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('moveTo.vec1'), true))
-      },
-      { collapsed: true }
-    ),
-    'fitToBox(mesh)': button(() => cameraControlsRef.current?.fitToBox(meshRef.current, true)),
-    setPosition: folder(
-      {
-        vec2: { value: [-5, 2, 1], label: 'vec' },
-        'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
-      },
-      { collapsed: true }
-    ),
     setTarget: folder(
       {
         vec3: { value: [3, 0, -3], label: 'vec' },
@@ -111,40 +83,14 @@ function Scene(props) {
       },
       { collapsed: true }
     ),
-    lerpLookAt: folder(
-      {
-        vec6: { value: [-2, 0, 0], label: 'posA' },
-        vec7: { value: [1, 1, 0], label: 'tgtA' },
-        vec8: { value: [0, 2, 5], label: 'posB' },
-        vec9: { value: [-1, 0, 0], label: 'tgtB' },
-        t: { value: Math.random(), label: 't', min: 0, max: 1 },
-        'f(…posA,…tgtA,…posB,…tgtB,t)': button((get) => {
-          return cameraControlsRef.current?.lerpLookAt(
-            ...get('lerpLookAt.vec6'),
-            ...get('lerpLookAt.vec7'),
-            ...get('lerpLookAt.vec8'),
-            ...get('lerpLookAt.vec9'),
-            get('lerpLookAt.t'),
-            true
-          )
-        })
-      },
-      { collapsed: true }
-    ),
-    saveState: button(() => cameraControlsRef.current?.saveState()),
-    reset: button(() => cameraControlsRef.current?.reset(true)),
-    enabled: { value: true, label: 'controls on' },
-    verticalDragToForward: { value: false, label: 'vert. drag to move forward' },
-    dollyToCursor: { value: false, label: 'dolly to cursor' },
-    infinityDolly: { value: false, label: 'infinity dolly' }
+    reset: button(() => cameraControlsRef.current?.reset(true))
   })
-
 
   return (
     <>
       <group position-y={-0.5}>
         <Center top>
-          <Model showModel = {props.showModel}/>
+          <Model showModel={props.showModel} />
         </Center>
         <Ground />
         <CameraControls
@@ -176,4 +122,3 @@ function Ground() {
   }
   return <Grid position={[0, -0.01, 0]} args={[10.5, 10.5]} {...gridConfig} />
 }
-
