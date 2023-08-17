@@ -4,9 +4,9 @@ import { Canvas, useThree } from '@react-three/fiber'
 import { Grid, Center, AccumulativeShadows, RandomizedLight, Environment, useGLTF, CameraControls } from '@react-three/drei'
 import { useControls, button, buttonGroup, folder } from 'leva'
 import { suspend } from 'suspend-react'
-import Popup from "./popUpModal";
+import Popup from './popUpModal'
 
-import Model from "./Model";
+import Model from './Model'
 
 const city = import('@pmndrs/assets/hdri/city.exr')
 const suzi = import(`@pmndrs/assets/models/suzi.glb`)
@@ -14,25 +14,24 @@ const suzi = import(`@pmndrs/assets/models/suzi.glb`)
 const { DEG2RAD } = THREE.MathUtils
 
 export default function App() {
-
-  const [imageFile, setImageFile] = useState("");
-  const [isModelOpen, setIsModelOpen] = useState(false);
+  const [imageFile, setImageFile] = useState('')
+  const [isModelOpen, setIsModelOpen] = useState(false)
   const showModel = (imageFile) => {
-    console.log(`showModel imageFile: ${imageFile}`);
-    setIsModelOpen(true);
-    setImageFile(imageFile);
-  };
+    console.log(`showModel imageFile: ${imageFile}`)
+    setIsModelOpen(true)
+    setImageFile(imageFile)
+  }
   const onHide = () => {
-    setIsModelOpen(false);
-  };
+    setIsModelOpen(false)
+  }
   return (
     <>
-    <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
-      <Scene showModel={showModel} />
-    </Canvas>
-     <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
+      <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
+        <Scene showModel={showModel} />
+      </Canvas>
+      <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
     </>
-)
+  )
 }
 
 function Scene(props) {
@@ -69,7 +68,7 @@ function Scene(props) {
     dollyGrp: buttonGroup({
       label: 'dolly',
       opts: {
-        '1': () => cameraControlsRef.current?.dolly(1, true),
+        1: () => cameraControlsRef.current?.dolly(1, true),
         '-1': () => cameraControlsRef.current?.dolly(-1, true)
       }
     }),
@@ -112,22 +111,27 @@ function Scene(props) {
     //   { collapsed: true }
     // ),
 
-
     reset: button(() => cameraControlsRef.current?.reset(true)),
 
+    균열_1: button((get) => {
+      cameraControlsRef.current?.setLookAt(2, 2, 3, 1, 2, 0, true)
+    }),
+    균열_2: button((get) => {
+      cameraControlsRef.current?.setLookAt(3, 2, 3, 1.5, 2, 0, true)
+    }),
+    균열_3: button((get) => {
+      cameraControlsRef.current?.setLookAt(4, 2, 3, 2, 2, 0, true)
+    }),
     균열_4: button((get) => {
-      cameraControlsRef.current?.setLookAt(3, 2, 3, 1, 2, 0, true)
-      cameraControlsRef.current?.zoom(camera.zoom * 2, true)
+      cameraControlsRef.current?.setLookAt(5, 2, 3, 2.5, 2, 0, true)
     })
-
   })
-
 
   return (
     <>
       <group position-y={-0.5}>
         <Center top>
-          <Model showModel = {props.showModel}/>
+          <Model showModel={props.showModel} />
         </Center>
         <Ground />
         <CameraControls
@@ -159,4 +163,3 @@ function Ground() {
   }
   return <Grid position={[0, -0.01, 0]} args={[10.5, 10.5]} {...gridConfig} />
 }
-
