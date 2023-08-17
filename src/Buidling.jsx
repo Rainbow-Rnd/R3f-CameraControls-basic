@@ -4,14 +4,17 @@ Command: npx gltfjsx@6.2.10 original.glb --transform
 Files: original.glb [7.65MB] > original-transformed.glb [2.31MB] (70%)
 */
 import { Stats, OrbitControls, useGLTF } from "@react-three/drei";
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 
 import * as THREE from 'three'
 
 
 
-export function Building({ controls, areas }) {
-	const { scene } = useGLTF("/all-transformed.glb");
+export function Building({ controls, areas, props }) {
+	//const { scene } = useGLTF("/all-transformed.glb");
+
+	const { nodes, materials } = useGLTF('/all_edited-transformed.glb')
+
 
 	const modelRef = useRef();
 
@@ -25,13 +28,21 @@ export function Building({ controls, areas }) {
 		}
 	}, []);
 
+	// return (
+	// 	<primitive
+	// 		object={scene.children[0]}
+	// 		castShadow
+	// 		receiveShadow
+	// 		material-envMapIntensity={0.4}
+	// 		ref={modelRef}
+	// 	/>
+	// );
+
 	return (
-		<primitive
-			object={scene.children[0]}
-			castShadow
-			receiveShadow
-			material-envMapIntensity={0.4}
-			ref={modelRef}
-		/>
-	);
+		<group {...props} dispose={null}>
+			<mesh geometry={nodes.Tile_1.geometry} material={materials.Material_0} position={[0.283, 5.274, 1.352]} ref={modelRef}/>
+		</group>
+	)
 }
+
+useGLTF.preload('/all_edited-transformed.glb')
