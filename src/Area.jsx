@@ -16,7 +16,10 @@ export function Area({ showModel, path, crackParam, title }) {
 	return (
 		<group dispose={null}>
 			<mesh
-				onClick={() => showModel(crackParam)}
+				onClick={(e) => {showModel(crackParam)
+					console.log(e.point);
+				}
+			}
 				geometry={nodes[title].geometry}
 				material={materials.Material_0}
 			>

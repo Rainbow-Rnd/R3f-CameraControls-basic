@@ -88,13 +88,13 @@ function Scene(props) {
     //   { collapsed: true }
     // ),
     // 'fitToBox(mesh)': button(() => cameraControlsRef.current?.fitToBox(meshRef.current, true)),
-    // setPosition: folder(
-    //   {
-    //     vec2: { value: [-5, 2, 1], label: 'vec' },
-    //     'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
-    //   },
-    //   { collapsed: true }
-    // ),
+    setPosition: folder(
+      {
+        vec2: { value: [-5, 2, 1], label: 'vec' },
+        'setPosition(…vec)': button((get) => cameraControlsRef.current?.setPosition(...get('setPosition.vec2'), true))
+      },
+      { collapsed: true }
+    ),
     // setTarget: folder(
     //   {
     //     vec3: { value: [3, 0, -3], label: 'vec' },
@@ -114,16 +114,22 @@ function Scene(props) {
     reset: button(() => cameraControlsRef.current?.reset(true)),
 
     균열_1: button((get) => {
-      cameraControlsRef.current?.setLookAt(2, 2, 3, 1, 2, 0, true)
+      cameraControlsRef.current?.setLookAt(1.07459, 1.326096, -2.0549,  1.4869516928011447, 1.50839858982, -0.752778, true);
+      cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
+
     }),
     균열_2: button((get) => {
-      cameraControlsRef.current?.setLookAt(3, 2, 3, 1.5, 2, 0, true)
+      cameraControlsRef.current?.setLookAt(0.7626, 1.878338, -1.2952, 0.762942, 1.8791, -0.13654, true);
+      cameraControlsRef.current?.rotate(-135 * DEG2RAD, 0, true)
+
     }),
     균열_3: button((get) => {
-      cameraControlsRef.current?.setLookAt(4, 2, 3, 2, 2, 0, true)
+      cameraControlsRef.current?.setLookAt(-1.95213, 3.1757, 0.00394, -1.260834, 2.724180, -1.19891, true);
+      cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
     }),
     균열_4: button((get) => {
-      cameraControlsRef.current?.setLookAt(5, 2, 3, 2.5, 2, 0, true)
+      cameraControlsRef.current?.setLookAt(-1.48586, 1.336, -2.05007, -1.48512, 1.3368, -1.0335, true);
+      cameraControlsRef.current?.rotate(45 * DEG2RAD, 0, true)
     })
   })
 
