@@ -4,15 +4,46 @@ Command: npx gltfjsx@6.2.10 1.glb --transform
 Files: 1.glb [4.54MB] > 1-transformed.glb [1.47MB] (68%)
 */
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useMemo, useState } from 'react'
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import { Box3, Vector3 } from 'three'
 
 export function Area({ showModel, path, crackParam, title }) {
 	const { nodes, materials } = useGLTF(path);
+
+	const [modelLoaded, setModelLoaded] = useState(false);
+
 	useEffect(() => {
-		console.log("threejs:", nodes[title]);
-	}, []);
+		if (nodes.title) {
+			setModelLoaded(true);
+		}
+	}, [nodes.title]);
+
+	const planeBoundingBox = useMemo(() => {
+		if (!modelLoaded) {
+			console.log('The plane is not yet loaded');
+			return null;
+		}
+
+		const bbox = new Box3();
+		bbox.setFromObject(nodes.title);
+		return bbox;
+	}, [modelLoaded, nodes.title]);
+
+	const planeCenterPoint = useMemo(() => {
+		if (!planeBoundingBox) return null;
+		const center = new Vector3();
+		planeBoundingBox.getCenter(center);
+		return center;
+	}, [planeBoundingBox]);
+
+	useEffect(() => {
+		if (planeCenterPoint) {
+			console.log('Center Point of Plane:', planeCenterPoint);
+		}
+	}, [planeCenterPoint]);
+
 	return (
 		<group dispose={null}>
 			<mesh

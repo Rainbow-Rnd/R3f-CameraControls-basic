@@ -115,7 +115,7 @@ function Scene(props) {
 
     균열_1: button((get) => {
       cameraControlsRef.current?.setLookAt(1.07459, 1.326096, -2.0549,  1.4869516928011447, 1.50839858982, -0.752778, true);
-      cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
+     // cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
 
     }),
     균열_2: button((get) => {
