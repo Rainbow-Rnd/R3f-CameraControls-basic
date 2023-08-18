@@ -1,12 +1,13 @@
 import * as THREE from 'three'
-import { memo, useRef, forwardRef, useState } from 'react'
+import { memo, useRef, forwardRef, useState, useEffect } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
 import { Grid, Center, AccumulativeShadows, RandomizedLight, Environment, useGLTF, CameraControls } from '@react-three/drei'
 import { useControls, button, buttonGroup, folder } from 'leva'
 import { suspend } from 'suspend-react'
 import Popup from './popUpModal'
-
+import Loading from './LoadingMUI'
 import Model from './Model'
+import CircularProgress from '@mui/material/CircularProgress'
 
 const city = import('@pmndrs/assets/hdri/city.exr')
 const suzi = import(`@pmndrs/assets/models/suzi.glb`)
@@ -16,6 +17,21 @@ const { DEG2RAD } = THREE.MathUtils
 export default function App() {
   const [imageFile, setImageFile] = useState('')
   const [isModelOpen, setIsModelOpen] = useState(false)
+  const [showModell, setShowModell] = useState(false)
+  const [isLoading, setIsLoading] = useState(0)
+
+  useEffect(() => {
+    const progressInterval = setInterval(() => {
+      setIsLoading((prevProgress) => prevProgress + 10)
+    }, 800)
+
+    setTimeout(() => {
+      clearInterval(progressInterval)
+      setIsLoading(100)
+      setShowModell(true)
+    }, 10000)
+  }, [])
+
   const showModel = (imageFile) => {
     console.log(`showModel imageFile: ${imageFile}`)
     setIsModelOpen(true)
@@ -26,9 +42,13 @@ export default function App() {
   }
   return (
     <>
-      <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
-        <Scene showModel={showModel} />
-      </Canvas>
+      {isLoading < 100 ? (
+        <Loading variant="determinate" value={isLoading} />
+      ) : (
+        <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
+          <Scene showModel={showModell} />
+        </Canvas>
+      )}
       <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
     </>
   )
@@ -79,15 +99,6 @@ function Scene(props) {
         '/-2': () => cameraControlsRef.current?.zoom(-camera.zoom / 2, true)
       }
     }),
-    // minDistance: { value: 0 },
-    // moveTo: folder(
-    //   {
-    //     vec1: { value: [3, 5, 2], label: 'vec' },
-    //     'moveTo(…vec)': button((get) => cameraControlsRef.current?.moveTo(...get('moveTo.vec1'), true))
-    //   },
-    //   { collapsed: true }
-    // ),
-    // 'fitToBox(mesh)': button(() => cameraControlsRef.current?.fitToBox(meshRef.current, true)),
     setPosition: folder(
       {
         vec2: { value: [-5, 2, 1], label: 'vec' },
@@ -95,40 +106,22 @@ function Scene(props) {
       },
       { collapsed: true }
     ),
-    // setTarget: folder(
-    //   {
-    //     vec3: { value: [3, 0, -3], label: 'vec' },
-    //     'setTarget(…vec)': button((get) => cameraControlsRef.current?.setTarget(...get('setTarget.vec3'), true))
-    //   },
-    //   { collapsed: true }
-    // ),
-    // setLookAt: folder(
-    //   {
-    //     vec4: { value: [1, 2, 3], label: 'position' },
-    //     vec5: { value: [1, 1, 0], label: 'target' },
-    //     'setLookAt(…position, …target)': button((get) => cameraControlsRef.current?.setLookAt(...get('setLookAt.vec4'), ...get('setLookAt.vec5'), true))
-    //   },
-    //   { collapsed: true }
-    // ),
-
     reset: button(() => cameraControlsRef.current?.reset(true)),
 
     균열_1: button((get) => {
-      cameraControlsRef.current?.setLookAt(1.07459, 1.326096, -2.0549,  1.4869516928011447, 1.50839858982, -0.752778, true);
+      cameraControlsRef.current?.setLookAt(1.07459, 1.326096, -2.0549, 1.4869516928011447, 1.50839858982, -0.752778, true)
       cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
-
     }),
     균열_2: button((get) => {
-      cameraControlsRef.current?.setLookAt(0.7626, 1.878338, -1.2952, 0.762942, 1.8791, -0.13654, true);
+      cameraControlsRef.current?.setLookAt(0.7626, 1.878338, -1.2952, 0.762942, 1.8791, -0.13654, true)
       cameraControlsRef.current?.rotate(-135 * DEG2RAD, 0, true)
-
     }),
     균열_3: button((get) => {
-      cameraControlsRef.current?.setLookAt(-1.95213, 3.1757, 0.00394, -1.260834, 2.724180, -1.19891, true);
+      cameraControlsRef.current?.setLookAt(-1.95213, 3.1757, 0.00394, -1.260834, 2.72418, -1.19891, true)
       cameraControlsRef.current?.rotate(-90 * DEG2RAD, 0, true)
     }),
     균열_4: button((get) => {
-      cameraControlsRef.current?.setLookAt(-1.48586, 1.336, -2.05007, -1.48512, 1.3368, -1.0335, true);
+      cameraControlsRef.current?.setLookAt(-1.48586, 1.336, -2.05007, -1.48512, 1.3368, -1.0335, true)
       cameraControlsRef.current?.rotate(45 * DEG2RAD, 0, true)
     })
   })
