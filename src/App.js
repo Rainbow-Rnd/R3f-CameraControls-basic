@@ -17,8 +17,9 @@ const { DEG2RAD } = THREE.MathUtils
 export default function App() {
   const [imageFile, setImageFile] = useState('')
   const [isModelOpen, setIsModelOpen] = useState(false)
-  const [showModell, setShowModell] = useState(false)
+  //const [showModell, setShowModell] = useState(false)
   const [isLoading, setIsLoading] = useState(0)
+
 
   useEffect(() => {
     const progressInterval = setInterval(() => {
@@ -28,7 +29,7 @@ export default function App() {
     setTimeout(() => {
       clearInterval(progressInterval)
       setIsLoading(100)
-      setShowModell(true)
+      //setShowModell(true)
     }, 10000)
   }, [])
 
@@ -46,7 +47,7 @@ export default function App() {
         <Loading variant="determinate" value={isLoading} />
       ) : (
         <Canvas shadows camera={{ position: [0, 0, 5], fov: 60 }}>
-          <Scene showModel={showModell} />
+          <Scene showModel={showModel} />
         </Canvas>
       )}
       <Popup visible={isModelOpen} onHide={onHide} imageFile={imageFile} />
