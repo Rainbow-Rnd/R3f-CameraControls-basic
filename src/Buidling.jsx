@@ -11,8 +11,8 @@ import * as THREE from 'three'
 
 
 
-export function Building({ controls, areas, props }) {
-	const { nodes, materials } = useGLTF('/yongin_optimized_cmd-transformed.glb')
+export function Building({ controls, areas, props }){
+	const { nodes, materials } = useGLTF('/yongin_compressed_400-transformed.glb')
 	return (
 		<group {...props} dispose={null}>
 			<mesh geometry={nodes.Tile_1_1.geometry} material={materials.Tile_1_0} />
@@ -50,7 +50,7 @@ export function Building({ controls, areas, props }) {
 	)
 }
 
-useGLTF.preload('/yongin_optimized_cmd-transformed.glb')
+useGLTF.preload('/yongin_compressed_400-transformed.glb')
 
 
 //      <mesh geometry={nodes.Tile_1.geometry} material={materials.Material_0} position={[0.283, 5.274, 1.352]} />
