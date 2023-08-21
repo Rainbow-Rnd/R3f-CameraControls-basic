@@ -7,7 +7,7 @@ import { Building } from "./Buidling";
 import { Area } from "./Area";
 import cracks from "./cracks.json";
 import { useRef } from "react";
-useGLTF.preload('/yongin_compressed_400-transformed')
+useGLTF.preload('/all_edited-transformed.glb')
 cracks.forEach((val) => {
     useGLTF.preload(val.path);
 });

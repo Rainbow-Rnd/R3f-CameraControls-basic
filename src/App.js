@@ -24,13 +24,13 @@ export default function App() {
   useEffect(() => {
     const progressInterval = setInterval(() => {
       setIsLoading((prevProgress) => prevProgress + 10)
-    }, 8000)
+    }, 800)
 
     setTimeout(() => {
       clearInterval(progressInterval)
       setIsLoading(100)
       //setShowModell(true)
-    }, 100000)
+    }, 10000)
   }, [])
 
   const showModel = (imageFile) => {
